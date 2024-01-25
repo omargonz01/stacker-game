@@ -5,9 +5,10 @@ const scoreCounter = document.querySelector('.score-counter');
 const endGameScreen = document.querySelector('.end-game-screen');
 const endGameText = document.querySelector('.end-game-text');
 const playAgainBtn = document.querySelector('.play-again');
+const levelCounter = document.querySelector('.level-counter');
 
 // Game Matrix
-const gridMatrix = [
+let gridMatrix = [
   [0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0],
@@ -50,6 +51,9 @@ function endGame(isVictory) {
   if (isVictory) {
     endGameText.innerHTML = 'YOU<br>WON!';
     endGameScreen.classList.add('win');
+  } else {
+    endGameText.innerHTML = 'GAME<br>OVER';
+    endGameScreen.classList.remove('win');
   }
   endGameScreen.classList.remove('hidden');
 }
@@ -159,4 +163,38 @@ playAgainBtn.addEventListener('click', onPlayAgain);
 function updateGameInterval() {
   clearInterval(gameInterval);
   gameInterval = setInterval(main, intervalTime);
+}
+function onPlayAgain() {
+  // Reset the game state
+  isGameOver = false;
+  currentRowIndex = gridMatrix.length - 1;
+  barSize = 3;
+  score = 0;
+  
+  // Reset the gridMatrix
+  gridMatrix = [
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [1, 1, 1, 0, 0, 0], // this is the new starting currentRowIndex
+  ];
+  
+  // Increase the level and speed, or reset to level 1 if level 10 is reached
+  if (level < 10) {
+    level++;
+    intervalTime -= 50;
+  } else {
+    level = 1;
+    intervalTime = 600;
+  }
+  
+  // Update the game interval
+  updateGameInterval();
+  
+  // Hide the end game screen
+  endGameScreen.classList.add('hidden');
 }

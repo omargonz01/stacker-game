@@ -48,12 +48,13 @@ h1 {
   width: 100%;
 }
 
-.score {
+.score-row,
+.level-row {
   display: flex;
   justify-content: space-between;
-  font-size: 32px;
-  /* font-weight: 700; */
 }
+
+
 
 /* # Game grid */
 

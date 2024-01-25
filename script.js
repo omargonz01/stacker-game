@@ -4,6 +4,7 @@ const stackBtn = document.querySelector('.stack');
 const scoreCounter = document.querySelector('.score-counter');
 const endGameScreen = document.querySelector('.end-game-screen');
 const endGameText = document.querySelector('.end-game-text');
+const nextLevelBtn = document.querySelector('.next-level');
 const playAgainBtn = document.querySelector('.play-again');
 const levelCounter = document.querySelector('.level-counter');
 
@@ -51,9 +52,21 @@ function endGame(isVictory) {
   if (isVictory) {
     endGameText.innerHTML = 'YOU<br>WON!';
     endGameScreen.classList.add('win');
+    if (level < 10) {
+      // Show the "Next Level" button if the player hasn't reached level 10 yet
+      nextLevelBtn.classList.remove('hidden');
+      playAgainBtn.classList.add('hidden');
+    } else {
+      // Show the "Play Again" button if the player has reached level 10
+      playAgainBtn.classList.remove('hidden');
+      nextLevelBtn.classList.add('hidden');
+    }
   } else {
     endGameText.innerHTML = 'GAME<br>OVER';
     endGameScreen.classList.remove('win');
+    // Show the "Play Again" button if the player lost
+    playAgainBtn.classList.remove('hidden');
+    nextLevelBtn.classList.add('hidden');
   }
   endGameScreen.classList.remove('hidden');
 }
@@ -157,6 +170,7 @@ function onPlayAgain() {
 
 // Events
 stackBtn.addEventListener('click', onStack);
+nextLevelBtn.addEventListener('click', onPlayAgain);
 playAgainBtn.addEventListener('click', onPlayAgain);
 
 // New functions for level and speed
@@ -191,6 +205,7 @@ function onPlayAgain() {
     level = 1;
     intervalTime = 600;
   }
+  levelCounter.innerText = level;
   
   // Update the game interval
   updateGameInterval();

@@ -73,9 +73,9 @@ function endGame(isVictory) {
 
 function checkWin() {
   if (currentRowIndex === 0) {
-    isGameOver = true;
     clearInterval(gameInterval);
     endGame(true);
+    isGameOver = false; // Reset isGameOver to false when the player wins
   }
 }
 
@@ -89,9 +89,9 @@ function checkLost() {
       barSize--;
     }
     if (barSize === 0) {
-      isGameOver = true;
       clearInterval(gameInterval);
       endGame(false);
+      isGameOver = true; // Set isGameOver to true when the player loses
     }
   }
 }
@@ -148,26 +148,6 @@ function main() {
   draw();
 }
 
-function onPlayAgain() {
-  // Reset the game state
-  isGameOver = false;
-  currentRowIndex = gridMatrix.length - 1;
-  barSize = 3;
-  score = 0;
-  // Increase the level and speed, or reset to level 1 if level 10 is reached
-  if (level < 10) {
-    level++;
-    intervalTime -= 50;
-  } else {
-    level = 1;
-    intervalTime = 600;
-  }
-  // Update the game interval
-  updateGameInterval();
-  // Hide the end game screen
-  endGameScreen.classList.add('hidden');
-}
-
 // Events
 stackBtn.addEventListener('click', onStack);
 nextLevelBtn.addEventListener('click', onPlayAgain);
@@ -178,9 +158,9 @@ function updateGameInterval() {
   clearInterval(gameInterval);
   gameInterval = setInterval(main, intervalTime);
 }
+
 function onPlayAgain() {
   // Reset the game state
-  isGameOver = false;
   currentRowIndex = gridMatrix.length - 1;
   barSize = 3;
   score = 0;
@@ -197,15 +177,18 @@ function onPlayAgain() {
     [1, 1, 1, 0, 0, 0], // this is the new starting currentRowIndex
   ];
   
-  // Increase the level and speed, or reset to level 1 if level 10 is reached
-  if (level < 10) {
-    level++;
-    intervalTime -= 50;
-  } else {
+  // Check if the player lost or beat level 10
+  if (isGameOver || level >= 10) {
+    // Reset to level 1 and initial interval time if the player lost or beat level 10
     level = 1;
     intervalTime = 600;
+  } else {
+    // Increase the level and decrease the interval time if the player won
+    level++;
+    intervalTime -= 50;
   }
-  levelCounter.innerText = level;
+  
+  levelCounter.innerText = level; // Update the level counter
   
   // Update the game interval
   updateGameInterval();

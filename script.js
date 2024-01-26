@@ -185,8 +185,10 @@ function onPlayAgain() {
   } else {
     // Increase the level and decrease the interval time if the player won
     level++;
-    intervalTime -= 50;
+    intervalTime -= 75;
   }
+  
+  isGameOver = false; // Reset isGameOver after checking if the player lost
   
   levelCounter.innerText = level; // Update the level counter
   
@@ -196,3 +198,4 @@ function onPlayAgain() {
   // Hide the end game screen
   endGameScreen.classList.add('hidden');
 }
+
